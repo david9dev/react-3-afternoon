@@ -21,7 +21,7 @@ export default class Compose extends Component {
   }
 
   createPost() {
-
+    this.props.method(this.state.text)
   }
 
   render() {

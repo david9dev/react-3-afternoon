@@ -20,7 +20,7 @@ export default class Edit extends Component {
   }
 
   updatePost() {
-
+    this.props.method(this.props.id, this.state.text)
   }
 
   render() {
