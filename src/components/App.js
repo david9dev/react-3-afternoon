@@ -16,6 +16,7 @@ class App extends Component {
     this.updatePost = this.updatePost.bind( this );
     this.deletePost = this.deletePost.bind( this );
     this.createPost = this.createPost.bind( this );
+    this.filterPosts = this.filterPosts.bind(this);
   }
   
   componentDidMount() {
@@ -24,7 +25,6 @@ class App extends Component {
       this.setState({
         posts: response.data
       })
-      console.log(response)
     })
     .catch((error) => {
       console.log(error)
@@ -34,8 +34,6 @@ class App extends Component {
   }
 
   updatePost(id, text) {
-    console.log(text);
-    console.log(id);
     axios.put(`https://practiceapi.devmountain.com/api/posts?id=${id}`, {text})
   .then((response) => 
   {
@@ -75,9 +73,41 @@ class App extends Component {
         posts: response.data
       })
     })
-    alert("you have created a post");
-    console.log(text);
+    .catch((error) => 
+    {
+      alert("could not create post")
+      console.log(error)
+    })
 
+  }
+
+  filterPosts(text)
+  {
+    console.log(text)
+    text
+    ?axios.get(`https://practiceapi.devmountain.com/api/posts/filter?text=${text}`)
+    .then((response) => 
+    {
+      this.setState({
+        posts: response.data
+      })
+    })
+    .catch((error) => 
+    {
+      alert("couldnt filter posts")
+      console.log(error)
+    })
+    //////////////////////////////////////////////////////////////////////////
+    :    axios.get('https://practiceapi.devmountain.com/api/posts')
+    .then((response) => {
+      this.setState({
+        posts: response.data
+      })
+    })
+    .catch((error) => {
+      console.log(error)
+      alert("couldnt get post data")
+    })
   }
 
   render() {
@@ -97,7 +127,8 @@ class App extends Component {
 
     return (
       <div className="App__parent">
-        <Header />
+        <Header
+        method={(text) => this.filterPosts(text)}/>
 
         <section className="App__content">
 
